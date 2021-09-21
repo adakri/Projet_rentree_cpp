@@ -1,30 +1,52 @@
+#include <ostream>
 #include <iostream>
-#include <cstdlib>
+#include <string>
+
+
+
 
 class Fraction
 {
     private:
-        double _numerator,_denominator;
+
+    protected:
+        int _numerator,_denominator;
     
     
     public:
-        Fraction(double numerator, double denominator);
-        //~Fraction();
-        void toString();
+        Fraction(int numerator, int denominator);
+        Fraction(){};
+        virtual ~Fraction(){};
+        std::string toString();
         bool operator== (const Fraction&);
         bool operator!= (const Fraction&);
         Fraction& operator+=(const Fraction&);
         Fraction& operator-=(const Fraction&);
         Fraction& operator=(const Fraction&);
+        friend std::ofstream& operator<<(std::ofstream& ,const Fraction& );
+
 
         //getters and setters
-        const double get_numerator() const {return this->_numerator;};
-        const double get_denominator() const {return this->_denominator;}
+        virtual int get_numerator() const {return _numerator;};
+        virtual int get_denominator() const {return _denominator;};
         
 
 };
 
-std::ofstream& operator<<(std::ofstream& ,const Fraction& );
+
+class Reduced_Fraction : public Fraction
+{
+    private:
+        int _reduced_numerator, _reduced_denominator;
+    public:
+        Reduced_Fraction(int, int);
+        virtual ~Reduced_Fraction(){};
+        int get_numerator() const {return _reduced_numerator;};
+        int get_denominator() const {return _reduced_denominator;};
+
+};
+
+
 
 
 

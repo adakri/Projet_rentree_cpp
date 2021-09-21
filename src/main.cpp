@@ -4,7 +4,11 @@
 #include "une_fonction.hpp"
 #include "une_classe.hpp"
 #include "Fraction.hpp"
+#include "Matrix.hpp"
 
+
+
+#define debug std::cout<<"debug"<<std::endl;
 
 int main(int, char**)
 {
@@ -22,12 +26,21 @@ int main(int, char**)
     une_classe chic("toto", 175, 80);
     std::cout << chic.get_taille() << std::endl; */
 
-    Fraction f1(2.,3.), f2(4.,5.);
+    Fraction f1(2,3), f2(4,2);
     //f2.toString();
     //std::cout<< (f1 == f1) <<std::endl;
     f1+=f1;
     f1.toString();
+    debug
+    std::cout<<f1.get_denominator()<<std::endl;;
     //std::cout<<f1;
+
+    Reduced_Fraction f3(4,2);
+    std::cout<<f3.get_numerator()<<"/"<<f3.get_denominator()<<std::endl;
+
+    Matrix<int> mat1(5,5), mat2(5,5); 
+
+
 
     return EXIT_SUCCESS;
 }

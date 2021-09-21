@@ -1,15 +1,19 @@
 #include "Fraction.hpp"
+#include <algorithm>
 
 
-Fraction::Fraction(double numerator, double denominator) : 
+Fraction::Fraction(int numerator, int denominator) : 
 _numerator(numerator), _denominator(denominator)
 {
 }
 
-void Fraction::toString()
+
+std::string Fraction::toString()
 {
     //add memory adress and object type
-    std::cout<<this->_numerator<<" / "<<this->_denominator<<std::endl;    
+    std::string str = std::to_string(this->_numerator) + " / " + std::to_string(this->_denominator);
+    std::cout<<std::to_string(this->_numerator) + " / " + std::to_string(this->_denominator);
+    return str;
 }
 
 
@@ -45,8 +49,31 @@ Fraction& Fraction::operator=(const Fraction& f1)
     return *this;
 }
 
-std::ofstream& operator<<(std::ofstream& os ,const Fraction& f1)
+
+//Fix this crap, it either works or doesn't
+std::ofstream& operator<<(std::ofstream& out ,const Fraction& f1)
 {
-    //os << f1.get_numerator();
-    return os;
+    //out << "h";
+    //out<< "/" <<f1.get_numerator();
+    return out;
+}
+
+
+
+
+//------------------------------------------------------------------------------
+
+Reduced_Fraction::Reduced_Fraction(int numerator, int denominator) : _reduced_denominator(denominator), _reduced_numerator(numerator)
+{
+    //std::cout<<"*"<<std::__gcd(numerator,denominator)<<std::endl;
+    if(std::__gcd(numerator,denominator)  == 1. )
+    {
+        _reduced_numerator = numerator;
+        _reduced_denominator = denominator;
+    }else{
+        _reduced_denominator = denominator / std::__gcd(numerator,denominator);
+        _reduced_numerator = numerator / std::__gcd(numerator,denominator);
+    }
+    //std::cout<<_reduced_numerator<<std::endl;
+
 }
