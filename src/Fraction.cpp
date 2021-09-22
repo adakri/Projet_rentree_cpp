@@ -50,7 +50,7 @@ Fraction& Fraction::operator=(const Fraction& f1)
 }
 
 
-//Fix this crap, it either works or doesn't
+//Fix this, it either works or doesn't
 std::ofstream& operator<<(std::ofstream& out ,const Fraction& f1)
 {
     //out << "h";

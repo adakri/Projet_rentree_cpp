@@ -32,15 +32,22 @@ int main(int, char**)
     f1+=f1;
     f1.toString();
     debug
-    std::cout<<f1.get_denominator()<<std::endl;;
+    std::cout<<"test for denominator get "<<f1.get_denominator()<<std::endl;;
     //std::cout<<f1;
 
     Reduced_Fraction f3(4,2);
-    std::cout<<f3.get_numerator()<<"/"<<f3.get_denominator()<<std::endl;
+    std::cout<<"Reduced Fraction "<<f3.get_numerator()<<"/"<<f3.get_denominator()<<std::endl;
 
-    Matrix<int> mat1(5,5), mat2(5,5); 
+    Matrix<int> mat1(5,5), mat2(5,5);
 
+    mat1.assign(2,5);
+    mat2.assign(8,7);
 
+    mat1.print_mat();
+
+    mat1 += mat2;
+
+    mat1.print_mat();
 
     return EXIT_SUCCESS;
 }
