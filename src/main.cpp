@@ -6,8 +6,6 @@
 #include "Fraction.hpp"
 #include "Matrix.hpp"
 #include "expr.hpp"
-#include "env.hpp"
-
 
 
 #define debug std::cout<<"debug"<<std::endl;
@@ -53,13 +51,25 @@ int main(int, char**)
 */
 
 
+    //test singulier
     Variable* var;
     var = new Variable("x");
     std::cout<<var->toStringInfixe()<<std::endl;
 
     Exp_abstract* expr;
     expr = new BinaireMult(new BinairePlus(new Variable("x"), new Variable("y")), new Constante(3));
+
+    //test affichage
     std::cout<<expr->toStringInfixe()<<std::endl;
+
+    //test evaluation
+    env* Env;
+    Env = new env();
+    Env->associer("x",4.);
+    Env->associer("y",5.);
+
+    std::cout<<expr->evaluer(*Env)<<std::endl;
+
    
 
 

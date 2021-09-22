@@ -4,12 +4,16 @@
 #include <vector>
 
 
+#include "env.hpp"
+
+
 class Exp_abstract
 {
     public:
         Exp_abstract();
         virtual ~Exp_abstract();
         virtual std::string toStringInfixe() = 0;
+        virtual double evaluer(env) = 0;
 };
 
 class Variable : public Exp_abstract
@@ -19,6 +23,9 @@ class Variable : public Exp_abstract
     public:
         Variable(std::string);
         std::string toStringInfixe();
+        double evaluer(env);
+
+        std::string get_variable() const {return _nom;};
 };
 
 class Constante : public Exp_abstract
@@ -28,6 +35,8 @@ class Constante : public Exp_abstract
     public:
         Constante(double);
         std::string toStringInfixe();
+        double evaluer(env);
+        double get_constante() const {return _valeur;};
 };
 
 class Expr_binaire : public Exp_abstract
@@ -45,6 +54,7 @@ class BinaireMult : public Expr_binaire
     public:
         BinaireMult(Exp_abstract*,Exp_abstract*);
         std::string toStringInfixe();
+        double evaluer(env);
 };
 
 class BinairePlus : public Expr_binaire
@@ -52,5 +62,6 @@ class BinairePlus : public Expr_binaire
     public:
         BinairePlus(Exp_abstract*,Exp_abstract*);
         std::string toStringInfixe();
+        double evaluer(env);
 
 };
