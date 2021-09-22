@@ -5,6 +5,8 @@
 #include "une_classe.hpp"
 #include "Fraction.hpp"
 #include "Matrix.hpp"
+#include "expr.hpp"
+#include "env.hpp"
 
 
 
@@ -24,7 +26,7 @@ int main(int, char**)
 
 
     une_classe chic("toto", 175, 80);
-    std::cout << chic.get_taille() << std::endl; */
+    std::cout << chic.get_taille() << std::endl; 
 
     Fraction f1(2,3), f2(4,2);
     //f2.toString();
@@ -48,6 +50,19 @@ int main(int, char**)
     mat1 += mat2;
 
     mat1.print_mat();
+*/
+
+
+    Variable* var;
+    var = new Variable("x");
+    std::cout<<var->toStringInfixe()<<std::endl;
+
+    Exp_abstract* expr;
+    expr = new BinaireMult(new BinairePlus(new Variable("x"), new Variable("y")), new Constante(3));
+    std::cout<<expr->toStringInfixe()<<std::endl;
+   
+
+
 
     return EXIT_SUCCESS;
 }
