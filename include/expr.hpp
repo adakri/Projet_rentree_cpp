@@ -24,7 +24,6 @@ class Variable : public Exp_abstract
         Variable(std::string);
         std::string toStringInfixe();
         double evaluer(env);
-
         std::string get_variable() const {return _nom;};
 };
 
