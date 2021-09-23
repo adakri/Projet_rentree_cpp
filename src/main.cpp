@@ -6,6 +6,9 @@
 #include "Fraction.hpp"
 #include "Matrix.hpp"
 #include "expr.hpp"
+#include "boid.hpp"
+
+
 
 
 #define debug std::cout<<"debug"<<std::endl;
@@ -63,13 +66,34 @@ int main(int, char**)
     std::cout<<expr->toStringInfixe()<<std::endl;
 
     //test evaluation
-    env* Env;
-    Env = new env();
+    //env* Env;
+    env* Env = new env();
     Env->associer("x",4.);
     Env->associer("y",5.);
 
     std::cout<<expr->evaluer(*Env)<<std::endl;
 
+
+    //------------------------Boids--------------------------------
+
+    //boids methods testing
+    vector p1 = {20., 30.};
+    vector v1 = { 5., 7.};
+
+    vector p2 = { 15.,10.};
+    vector v2 = { 8., 11.};
+
+    Boid* b = new Boid(p1,v1);
+
+    std::cout<< b->toString() <<std::endl;
+
+    //boids struct methods
+
+    b= new Boid(p1+p2, v1+v2);
+
+    std::cout<<"sum boid \n" << b->toString() <<std::endl;
+
+    //
    
 
 
