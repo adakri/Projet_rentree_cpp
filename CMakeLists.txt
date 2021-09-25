@@ -2,7 +2,7 @@
 # un peu vieux jeu, la bonne pratique desormais est d'utiliser des "target"
 # quelqu'un.e nous fait un recherche et un petit topo la-dessus?
 
-cmake_minimum_required(VERSION 3.0.0)
+cmake_minimum_required(VERSION 3.0.2)
 
 project(example)
 
@@ -10,8 +10,10 @@ project(example)
 set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wall -Wextra")
 
+
 # chemin vers les header files
 include_directories(include)
+
 
 # les fichiers source peuvent etre ajoutes un a un (penilbe, mais toujours fiable)
 #   set(SOURCES src/main.cpp src/une_fonction.cpp src/une_classe.cpp
@@ -22,3 +24,17 @@ file(GLOB_RECURSE sources CONFIGURE_DEPENDS src/*.cpp)
 add_executable(${PROJECT_NAME} ${sources})
 # bin location: (. by default)
 # set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/../bin)  # or in bin
+
+# Detect and add SFML
+set(CMAKE_MODULE_PATH "${CMAKE_SOURCE_DIR}/cmake_modules" ${CMAKE_MODULE_PATH})
+#Find any version 2.X of SFML
+#See the FindSFML.cmake file for additional details and instructions
+find_package(SFML 2.5 COMPONENTS graphics window system REQUIRED)
+
+
+if(SFML_FOUND)
+  include_directories(${SFML_INCLUDE_DIR})
+  target_link_libraries(${PROJECT_NAME} sfml-graphics sfml-audio)
+endif()
+
+

@@ -18,4 +18,18 @@ std::string Boid::toString()
 }
 
 
+double Boid::compute_distance(Boid b1, Boid b2)
+{
+    return sqrt( pow( (b1._position)._x - (b2._position)._x ,2) + pow( (b1._position)._y - (b2._position)._y ,2) );
+}
 
+
+void Boid::update_position(vector p)
+{
+    _position = _position + p;
+}
+
+void Boid::update_velocity(vector v)
+{
+    _velocity = _velocity + v; 
+}

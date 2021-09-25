@@ -6,7 +6,11 @@
 #include "Fraction.hpp"
 #include "Matrix.hpp"
 #include "expr.hpp"
-#include "boid.hpp"
+
+
+
+
+#include "simulation.hpp"
 
 
 
@@ -93,8 +97,16 @@ int main(int, char**)
 
     std::cout<<"sum boid \n" << b->toString() <<std::endl;
 
-    //
+    Simulation Sim(20);
+
+    Sim.initialise_positions();
+
+    Sim.print_boids();
    
+
+    //sfml stuff testing
+    Sim.show_window();
+    
 
 
 
