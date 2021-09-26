@@ -26,10 +26,10 @@ double Boid::compute_distance(Boid b1, Boid b2)
 
 void Boid::update_position(vector p)
 {
-    _position = _position + p;
+    _position =  p;
 }
 
 void Boid::update_velocity(vector v)
 {
-    _velocity = _velocity + v; 
+    _velocity =  v; 
 }

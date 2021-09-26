@@ -97,15 +97,19 @@ int main(int, char**)
 
     std::cout<<"sum boid \n" << b->toString() <<std::endl;
 
-    Simulation Sim(20);
+    Simulation Sim(300,1000,1000);
 
     Sim.initialise_positions();
 
+    std::cout<<"Initialise the boid"<<std::endl;
+
     Sim.print_boids();
+
+    Sim.move_boids();
    
 
     //sfml stuff testing
-    Sim.show_window();
+    Sim.show_boids();
     
 
 

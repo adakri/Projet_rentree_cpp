@@ -11,10 +11,12 @@ class Simulation
 {
     private:
         std::vector<Boid*> _boids;
-        int _N;
+        std::vector<sf::CircleShape*> _boids_points;
+        int _N,_width,_length;
+        sf::RenderWindow _window;
         //QWidget _window;
     public:
-        Simulation(int);
+        Simulation(int, int , int);
         ~Simulation();
 
         //game methods
@@ -25,8 +27,9 @@ class Simulation
         vector rule3(Boid*);
 
         //SFML
-        void show_window();
+        void show_boids();
         void draw_boids();
+        void move_boids();
 
         //getters
         int get_n() const {return _N;};

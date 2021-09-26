@@ -17,6 +17,10 @@ struct vector{
     {
         return {v._x - this->_x, v._y - this->_y};
     };
+    void isString()
+    {
+        std::cout<<"vector: _x:"<< _x <<" , "<< _y << std::endl;
+    }
 };
 
 
