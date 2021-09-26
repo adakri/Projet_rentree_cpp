@@ -110,13 +110,13 @@ void Simulation::move_all_boids_to_new_positions()
         v2 = rule2(_boids[i]);
         v3 = rule3(_boids[i]);
 
-        std::cout<<_boids[i]->get_velocity()._x<<"//////"<<_boids[i]->get_velocity()._y<<std::endl;
+        //std::cout<<_boids[i]->get_velocity()._x<<"//////"<<_boids[i]->get_velocity()._y<<std::endl;
 
         _boids[i]-> update_velocity(_boids[i]->get_velocity()+v1+v2+v3);
         _boids[i]-> update_position(_boids[i]->get_position() + _boids[i]->get_velocity());
 
         
-        std::cout<<_boids[i]->get_position()._x<<"////"<<_boids[i]->get_position()._y<<std::endl;
+        //std::cout<<_boids[i]->get_position()._x<<"////"<<_boids[i]->get_position()._y<<std::endl;
 
 
         if( (_boids[i]->get_position()._x > _width) || (_boids[i]->get_position()._y > _length) )
@@ -156,7 +156,7 @@ void Simulation::move_all_boids_to_new_positions()
         }
         
 
-        std::cout<<"-------------------------------------------------"<<std::endl;
+        //std::cout<<"!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!"<<std::endl;
 
           
     }
@@ -189,18 +189,26 @@ void Simulation::show_boids()
     triangle.setFillColor(sf::Color(100, 250, 50));
     triangle.setPosition(500., 500.);
     */
+    sf::Clock clock;
+
+    //sf::Time prevTime = clock.getElapsedTime();
+
 
     while (_window.isOpen())
     {
         sf::Event event;
+
+        //sf::Time elapsedTime = clock.getElapsedTime() - prevTime;
+
+        //prevTime = prevTime + elapsedTime;
+
         while (_window.pollEvent(event))
         {
             if (event.type == sf::Event::Closed)
             {
                 _window.close();
             }
-
-
+            
             if (sf::Keyboard::isKeyPressed(sf::Keyboard::W))
             {
                 _window.clear(sf::Color(255, 255, 255, 255));
@@ -211,9 +219,12 @@ void Simulation::show_boids()
 
                 print_boids();
 
-                _window.display();
-
+                _window.display(); 
             }
+
+            
+
+            std::cout<<"loop"<<std::endl; 
         }
 
         _window.clear(sf::Color(255, 255, 255, 255));
@@ -221,6 +232,7 @@ void Simulation::show_boids()
         draw_boids();
 
         _window.display();
+
         
     }
 }
