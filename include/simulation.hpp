@@ -25,11 +25,12 @@ class Simulation
         vector rule1(Boid*);
         vector rule2(Boid*);
         vector rule3(Boid*);
+        void launch_simulation();
 
         //SFML
         void show_boids();
         void draw_boids();
-        void move_boids();
+        void move_boids_shapes();
 
         //getters
         int get_n() const {return _N;};

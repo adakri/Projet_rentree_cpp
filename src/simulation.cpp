@@ -1,12 +1,16 @@
 #include "simulation.hpp"
 
+#define bug std::cout<<"debug"<<std::endl;
+
+
+
 Simulation::Simulation(int n, int width, int length) : _N(n),_window(sf::VideoMode(1000, 1000), "Boids"), _width(width), _length(length)
 {
     //_boids = new std::vector<Boid>;
     _boids.resize(_N);
     _boids_points.resize(_N);
-    
-    //_window = new QWidget;
+    _window.setVerticalSyncEnabled(false);
+    _window.setFramerateLimit(6);
 }
 
 Simulation::~Simulation()
@@ -26,8 +30,8 @@ void Simulation::initialise_positions()
         srand (i);
         random_posx = ( (double)rand() / RAND_MAX ) *999. + 1.;
         random_posy = ( (double)rand() / RAND_MAX ) *999. + 1.;
-        random_velocityx = ( (double)rand() / RAND_MAX ) *20. + 1.;
-        random_velocityy = ( (double)rand() / RAND_MAX ) *20. + 1.;
+        random_velocityx = ( (double)rand() / RAND_MAX ) *5. + 1.;
+        random_velocityy = ( (double)rand() / RAND_MAX ) *5. + 1.;
         pos = {random_posx,random_posy};
         vel = {random_velocityx,random_velocityy};
         
@@ -48,9 +52,9 @@ vector Simulation::rule1(Boid* b)
         perceived_center = perceived_center + _boids[i]->get_position(); 
     }
     perceived_center = perceived_center - b->get_position();
+
     perceived_center._x /= double(_N-1);
     perceived_center._y /= double(_N-1);
-    
     
     perceived_center = perceived_center - b->get_position();
 
@@ -133,23 +137,23 @@ void Simulation::move_all_boids_to_new_positions()
                 new_position._y = (_boids[i]->get_position())._y - _length;
             }
 
-            std::cout<<new_position._x<<"/"<<new_position._y<<std::endl;
+            //std::cout<<new_position._x<<"/"<<new_position._y<<std::endl;
 
             _boids[i]-> update_position(new_position);
         }
         
-        if( (_boids[i]->get_velocity()._x > 1000.) || (_boids[i]->get_velocity()._y > 1000.) )
+        if( (_boids[i]->get_velocity()._x > 100.) || (_boids[i]->get_velocity()._y > 100.) )
         {
             vector new_velocity = {_boids[i]->get_velocity()._x,_boids[i]->get_velocity()._y};
 
-            if( (_boids[i]->get_velocity())._x > 1000.)
+            if( (_boids[i]->get_velocity())._x > 100.)
             {
-                new_velocity._x = (_boids[i]->get_velocity())._x - _width;
+                new_velocity._x = (_boids[i]->get_velocity())._x / 100.;
             }
 
-            if( (_boids[i]->get_velocity())._y > 1000.)
+            if( (_boids[i]->get_velocity())._y > 100.)
             {
-                new_velocity._y = (_boids[i]->get_velocity())._y - _length;
+                new_velocity._y = (_boids[i]->get_velocity())._y / 100.;
             }
 
             _boids[i]-> update_velocity(new_velocity);
@@ -181,22 +185,46 @@ void Simulation::print_boids()
 void Simulation::show_boids()
 {
     //sf::RenderWindow window(sf::VideoMode(1000, 1000), "Boids");
+    bug
 
-
-    //move_boids();
+    //move_boids_shapes();
     /*
     sf::CircleShape triangle(1000./double(_N));
     triangle.setFillColor(sf::Color(100, 250, 50));
     triangle.setPosition(500., 500.);
     */
-    sf::Clock clock;
+
+    sf::Event event;
+    
+    //sf::Texture texture;
+    
+    //texture.loadFromFile("images/arrow.png");
+
+    //sf::IntRect rectSourceSprite(300, 0, 300, 400);
+
+    //sf::Sprite sprite(texture,rectSourceSprite);
+    
+
 
     //sf::Time prevTime = clock.getElapsedTime();
 
+    bug
 
     while (_window.isOpen())
     {
-        sf::Event event;
+        sf::Clock clock;
+
+        _window.clear(sf::Color::White);
+
+        move_all_boids_to_new_positions();
+
+        move_boids_shapes();
+
+        draw_boids();
+
+        print_boids();
+
+        _window.display();
 
         //sf::Time elapsedTime = clock.getElapsedTime() - prevTime;
 
@@ -211,31 +239,33 @@ void Simulation::show_boids()
             
             if (sf::Keyboard::isKeyPressed(sf::Keyboard::W))
             {
-                _window.clear(sf::Color(255, 255, 255, 255));
+                _window.clear(sf::Color::White);
 
                 move_all_boids_to_new_positions();
 
-                move_boids();
+                move_boids_shapes();
 
                 print_boids();
 
+                draw_boids();
+
                 _window.display(); 
             }
+
+            //sprite.setTextureRect(rectSourceSprite);
+
+            //_window.clear(sf::Color(255, 255, 255, 255));
 
             
 
             std::cout<<"loop"<<std::endl; 
         }
-
-        _window.clear(sf::Color(255, 255, 255, 255));
-
-        draw_boids();
-
-        _window.display();
-
         
     }
 }
+
+
+
 
 void Simulation::draw_boids()
 {
@@ -245,13 +275,49 @@ void Simulation::draw_boids()
     }
 }
 
-void Simulation::move_boids()
+
+
+
+void Simulation::move_boids_shapes()
 {
     for(int i=0; i<_N; i++)
     {
-        _boids_points[i] = new sf::CircleShape(1000./double(_N));
+        _boids_points[i] = new sf::CircleShape(500./double(_N));
+
+        // create an empty shape
+        sf::ConvexShape arrow;
+
+        // resize it to 5 points
+        arrow.setPointCount(4);
+
+        // define the points
+        arrow.setPoint(0, sf::Vector2f(0, 0));
+        arrow.setPoint(1, sf::Vector2f(10, 0));
+        arrow.setPoint(2, sf::Vector2f(5, 4));
+        arrow.setPoint(3, sf::Vector2f(5, 15));
+
+
         _boids_points[i]->setFillColor(sf::Color(100, 250, 50));
         //rewind time already taken into account
         _boids_points[i]->setPosition(_boids[i]->get_position()._x, _boids[i]->get_position()._y);
     }
+}
+
+
+void Simulation::launch_simulation()
+{
+    std::cout<<"Initialising the boids"<<std::endl;
+
+    this->initialise_positions();
+
+    this->move_boids_shapes();
+
+    std::cout<<"Represent the boids"<<std::endl;
+    
+    this->draw_boids();
+
+    //sfml stuff testing
+    std::cout<<"Show the boids"<<std::endl;
+    this->show_boids();
+    
 }
