@@ -1,5 +1,5 @@
 #include "boid.hpp"
-
+#include <math.h> 
 #include <SFML/Graphics.hpp>
 #include <SFML/Window.hpp>
 #include <stdlib.h>    
@@ -11,7 +11,7 @@ class Simulation
 {
     private:
         std::vector<Boid*> _boids;
-        std::vector<sf::CircleShape*> _boids_points;
+        std::vector<sf::ConvexShape*> _boids_points;
         int _N,_width,_length;
         sf::RenderWindow _window;
         //QWidget _window;
@@ -25,11 +25,12 @@ class Simulation
         vector rule1(Boid*);
         vector rule2(Boid*);
         vector rule3(Boid*);
+        void launch_simulation();
 
         //SFML
         void show_boids();
         void draw_boids();
-        void move_boids();
+        void move_boids_shapes();
 
         //getters
         int get_n() const {return _N;};
