@@ -84,3 +84,13 @@
 1	15	0	clean	a7c70eacb11a5051
 1	15	0	/user/4/dakria/work/kit_demarrage/build/CMakeFiles/cmake.verify_globs	864ad491d8dde525
 0	5	0	clean	a7c70eacb11a5051
+1	165	1632727849564522923	build.ninja	d6eb3712d67cdd5d
+1	27	0	/user/4/dakria/work/kit_demarrage/build/CMakeFiles/cmake.verify_globs	864ad491d8dde525
+27	115	1632727986562282222	build.ninja	d6eb3712d67cdd5d
+0	32	0	/user/4/dakria/work/kit_demarrage/build/CMakeFiles/cmake.verify_globs	864ad491d8dde525
+2	774	1632727987400311351	CMakeFiles/example.dir/src/main.cpp.o	1167e423ea96af02
+0	14	0	/user/4/dakria/work/kit_demarrage/build/CMakeFiles/cmake.verify_globs	864ad491d8dde525
+1	131	1632728065660031581	build.ninja	d6eb3712d67cdd5d
+2	833	1632728066553062622	CMakeFiles/example.dir/src/main.cpp.o	1167e423ea96af02
+0	328	1632728117902847489	build.ninja	d6eb3712d67cdd5d
+0	493	1632728131428317620	CMakeFiles/boids.dir/src/main.cpp.o	5a845f0417c14528
