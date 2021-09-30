@@ -97,7 +97,7 @@ int main(int, char**)
 
     std::cout<<"sum boid \n" << b->toString() <<std::endl;
 
-    Simulation Sim(10,1000,1000);
+    Simulation Sim(500,640,640);
 
     //Sim.initialise_positions();
 

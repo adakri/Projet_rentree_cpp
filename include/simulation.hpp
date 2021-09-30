@@ -13,6 +13,7 @@ class Simulation
         std::vector<Boid*> _boids;
         std::vector<sf::ConvexShape*> _boids_points;
         int _N,_width,_length;
+        double _alignement_d, _max_speed, _separation_d;
         sf::RenderWindow _window;
         //QWidget _window;
     public:
@@ -22,9 +23,9 @@ class Simulation
         //game methods
         void initialise_positions();
         void move_all_boids_to_new_positions();
-        vector rule1(Boid*);
-        vector rule2(Boid*);
-        vector rule3(Boid*);
+        vector alignment(Boid*);
+        vector cohesion(Boid*);
+        vector separation(Boid*);
         void launch_simulation();
 
         //SFML

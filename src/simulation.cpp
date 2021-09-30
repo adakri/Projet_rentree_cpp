@@ -5,7 +5,7 @@
 #define PI 3.14159265
 
 
-Simulation::Simulation(int n, int width, int length) : _N(n),_window(sf::VideoMode(1000, 1000), "Boids"), _width(width), _length(length)
+Simulation::Simulation(int n, int width, int length) :  _width(width), _length(length),_N(n),_window(sf::VideoMode(width, length), "Boids"), _alignement_d(50.), _max_speed(20.), _separation_d(5.)
 {
     
     //_boids = new std::vector<Boid>;
@@ -28,12 +28,12 @@ Simulation::Simulation(int n, int width, int length) : _N(n),_window(sf::VideoMo
 
         _boids_points[i]->setFillColor(sf::Color(0, 0, 0));
 
-        _boids_points[i]->scale(0.35, 0.25);
+        _boids_points[i]->scale(0.25, 0.17);
 
     }
 
     _window.setVerticalSyncEnabled(false);
-    _window.setFramerateLimit(10);
+    _window.setFramerateLimit(30);
 }
 
 Simulation::~Simulation()
@@ -50,75 +50,125 @@ void Simulation::initialise_positions()
 
     for (int i=0; i<_N;i++)
     {
-        random_posx = ( (double)rand() / RAND_MAX ) *999. + 1.;
-        random_posy = ( (double)rand() / RAND_MAX ) *999. + 1.;
-        random_velocityx = ( (double)rand() / RAND_MAX ) *20. + 1.;
-        random_velocityy = ( (double)rand() / RAND_MAX ) *20. + 1.;
+        random_posx = ( (double)rand() / RAND_MAX ) *_width + 0.;
+        random_posy = ( (double)rand() / RAND_MAX ) *_length + 0.;
+        random_velocityx = ( (double)rand() / RAND_MAX ) *_max_speed -_max_speed;
+        random_velocityy = ( (double)rand() / RAND_MAX ) *_max_speed -_max_speed;
         pos = {random_posx,random_posy};
         vel = {random_velocityx,random_velocityy};
         
         _boids[i] = new Boid(pos,vel);
     }
+    //this->print_boids();
+
+    //exit(0);
 
 }
 
 
 
-vector Simulation::rule1(Boid* b)
+vector Simulation::alignment(Boid* b)
 {
     vector perceived_center = {0.,0.};
-
+    int counter(0);
     //Better mapping to exclude the boid
     for (int i=0; i<_N; i++)
     {
-        perceived_center = perceived_center + _boids[i]->get_position(); 
+        if(Boid::compute_distance(*b, *_boids[i]) < _alignement_d)
+        {
+            perceived_center = perceived_center + _boids[i]->get_velocity();
+            counter++;
+        }
+         
     }
-    perceived_center = perceived_center - b->get_position();
+    //perceived_center = perceived_center - b->get_position();
 
-    perceived_center._x /= double(_N-1);
-    perceived_center._y /= double(_N-1);
+    perceived_center._x /= double(counter);
+    perceived_center._y /= double(counter);
     
-    perceived_center = perceived_center - b->get_position();
+    perceived_center = perceived_center - b->get_velocity();
 
-    perceived_center._x /= (10. * _N);
-    perceived_center._y /= (10. * _N);
-
+    perceived_center._x *= 0.001;
+    perceived_center._y *= 0.001;
+    
+    if( perceived_center._x > _max_speed || perceived_center._y > _max_speed)
+    {
+        perceived_center._x = _max_speed * 0.3;
+        perceived_center._y = _max_speed * 0.3;
+    }
+    
 
     return perceived_center; 
 }
 
 
-vector Simulation::rule2(Boid* b)
+vector Simulation::cohesion(Boid* b)
 {
     vector c= {0.,0.};
+    int counter(0);
+
     for (int i=0; i<_N; i++)
     {
         //the added boid in the loop does nothing, too lazt to map it or index it?
-        double distance = Boid::compute_distance(*b, *_boids[i]);
-        if (distance < 1.)
+        //double distance = Boid::compute_distance(*b, *_boids[i]);
+        if (Boid::compute_distance(*b, *_boids[i]) < _alignement_d)
         {
-            c = c + (b->get_position() - _boids[i]->get_position() ); 
+            c = c + _boids[i]->get_position() ; 
+            counter++;
         }
     }
+
+    c._x /= double(counter);
+    c._y /= double(counter);
+
+    c = c - b->get_position();
+
+    //c._x *= 0.1 ;
+    //c._y *= 0.1 ;
+    
+    if( c._x > _max_speed || c._y > _max_speed)
+    {
+        c._x = _max_speed * 0.3;
+        c._y = _max_speed * 0.3;
+    }
+    
     return c;
 }
 
 
-vector Simulation::rule3(Boid* b)
+vector Simulation::separation(Boid* b)
 {
     vector pvj = {0.,0.};
+    int counter(0);
     for (int i=0; i<_N; i++)
     {
-        pvj = pvj + _boids[i]->get_velocity(); 
+        if (Boid::compute_distance(*b, *_boids[i]) <= _separation_d)
+        {
+            vector tmp ={0.0};
+            tmp._x = _boids[i]->get_position()._x / _width;
+            tmp._y = _boids[i]->get_position()._y / _length;
+            pvj = pvj + (tmp - b->get_velocity());
+            counter++;
+        }
+         
     }
-    pvj = pvj - b->get_position();
-    pvj._x /= double(_N-1);
-    pvj._y /= double(_N-1);
+    
+    if( pvj._x > _max_speed || pvj._y > _max_speed)
+    {
+        pvj._x = _max_speed * 0.3;
+        pvj._y = _max_speed * 0.3;
+    }
+    
 
-    pvj = pvj - b->get_velocity();
 
-    pvj._x /= (double(0.5*_N));
-    pvj._y /= (double(0.5*_N));
+    //pvj = pvj - b->get_position();
+    pvj._x *= 0.1;
+    pvj._y *= 0.1;
+
+    //pvj = pvj - b->get_velocity();
+
+    //pvj._x /= (double(counter));
+    //pvj._y /= (double(counter));
 
     return pvj;
     
@@ -132,75 +182,75 @@ void Simulation::move_all_boids_to_new_positions()
 
     for(int i=0; i<_N; i++)
     {
-        v1 = rule1(_boids[i]);
-        v2 = rule2(_boids[i]);
-        v3 = rule3(_boids[i]);
+        v1 = alignment(_boids[i]);
+        v2 = cohesion(_boids[i]);
+        v3 = separation(_boids[i]);
 
         //std::cout<<_boids[i]->get_velocity()._x<<"//////"<<_boids[i]->get_velocity()._y<<std::endl;
 
-        _boids[i]-> update_velocity(_boids[i]->get_velocity()+v1+v2+v3);
+        _boids[i]-> update_velocity(_boids[i]->get_velocity()+v1+v2-v3);
         _boids[i]-> update_position(_boids[i]->get_position() + _boids[i]->get_velocity());
 
         
         //std::cout<<_boids[i]->get_position()._x<<"////"<<_boids[i]->get_position()._y<<std::endl;
 
 
-        if( (_boids[i]->get_position()._x > _width) || (_boids[i]->get_position()._y > _length) || (_boids[i]->get_position()._x < 0.) || (_boids[i]->get_position()._y < 0.) )
+
+        vector new_position = {_boids[i]->get_position()._x,_boids[i]->get_position()._y};
+
+        if( (_boids[i]->get_position())._x > _width)
         {
-            vector new_position = {_boids[i]->get_position()._x,_boids[i]->get_position()._y};
-
-            if( (_boids[i]->get_position())._x > _width)
-            {
-                new_position._x = (_boids[i]->get_position())._x - _width;
-            }
-
-            if( (_boids[i]->get_position())._y > _length)
-            {
-                new_position._y = (_boids[i]->get_position())._y - _length;
-            }
-
-            if( (_boids[i]->get_position())._x < 0.)
-            {
-                new_position._x = (_boids[i]->get_position())._x + _width;
-            }
-
-            if( (_boids[i]->get_position())._y < 0.)
-            {
-                new_position._y = (_boids[i]->get_position())._y + _length;
-            }
-
-            //std::cout<<new_position._x<<"/"<<new_position._y<<std::endl;
-
-            _boids[i]-> update_position(new_position);
+            //new_position._x = (_boids[i]->get_position())._x - _width;
+            new_position._x = 0.;
         }
+
+        if( (_boids[i]->get_position())._y > _length)
+        {
+            new_position._y = 0.;
+        }
+
+        if( (_boids[i]->get_position())._x < 0.)
+        {
+            new_position._x = _width;
+        }
+
+        if( (_boids[i]->get_position())._y < 0.)
+        {
+            new_position._y = _length;
+        }
+
+        //std::cout<<new_position._x<<"/"<<new_position._y<<std::endl;
+
+        _boids[i]-> update_position(new_position);
         
         
-        if( (_boids[i]->get_velocity()._x > 10.) || (_boids[i]->get_velocity()._y > 10.)   || (_boids[i]->get_velocity()._x < -10.) || (_boids[i]->get_velocity()._y < -10.))
+        
+
+        vector new_velocity = {_boids[i]->get_velocity()._x,_boids[i]->get_velocity()._y};
+
+        if( (_boids[i]->get_velocity())._x > _max_speed)
         {
-            vector new_velocity = {_boids[i]->get_velocity()._x,_boids[i]->get_velocity()._y};
-
-            if( (_boids[i]->get_velocity())._x > 10.)
-            {
-                new_velocity._x = (_boids[i]->get_velocity())._x / 100.;
-            }
-
-            if( (_boids[i]->get_velocity())._y > 10.)
-            {
-                new_velocity._y = (_boids[i]->get_velocity())._y / 100.;
-            }
-
-            if( (_boids[i]->get_velocity())._x < -10.)
-            {
-                new_velocity._x = (_boids[i]->get_velocity())._x / 100.;
-            }
-
-            if( (_boids[i]->get_velocity())._y < -10.)
-            {
-                new_velocity._y = (_boids[i]->get_velocity())._y / 100.;
-            }
-
-            _boids[i]-> update_velocity(new_velocity);
+            //new_velocity._x = (_boids[i]->get_velocity())._x / 100.;
+            new_velocity._x = 5.;
         }
+
+        if( (_boids[i]->get_velocity())._y > _max_speed)
+        {
+            new_velocity._y = 5.;
+        }
+
+        if( (_boids[i]->get_velocity())._x < -_max_speed)
+        {
+            new_velocity._x = -5.;
+        }
+
+        if( (_boids[i]->get_velocity())._y < -_max_speed)
+        {
+            new_velocity._y = -5.;
+        }
+
+        _boids[i]-> update_velocity(new_velocity);
+        
         
 
         //std::cout<<"!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!"<<std::endl;
@@ -239,20 +289,6 @@ void Simulation::show_boids()
 
     sf::Event event;
     
-    //sf::Texture texture;
-    
-    //texture.loadFromFile("images/arrow.png");
-
-    //sf::IntRect rectSourceSprite(300, 0, 300, 400);
-
-    //sf::Sprite sprite(texture,rectSourceSprite);
-    
-
-
-    //sf::Time prevTime = clock.getElapsedTime();
-
-    bug
-
     while (_window.isOpen())
     {
         sf::Clock clock;
@@ -295,6 +331,11 @@ void Simulation::show_boids()
                 _window.display(); 
             }
 
+            if (sf::Keyboard::isKeyPressed(sf::Keyboard::P))
+            {
+
+            }
+
             //sprite.setTextureRect(rectSourceSprite);
 
             //_window.clear(sf::Color(255, 255, 255, 255));
@@ -331,7 +372,7 @@ void Simulation::move_boids_shapes()
         _boids_points[i]->setPosition(_boids[i]->get_position()._x, _boids[i]->get_position()._y);
         //Rotate the object
         double angle = abs (tan( abs(_boids[i]->get_velocity()._x) / abs(_boids[i]->get_velocity()._y ) * 180. / PI) );
-        std::cout<<"angle: "<<angle<<std::endl;
+        //std::cout<<"angle: "<<angle<<std::endl;
 
         if( _boids[i]->get_velocity()._x > 0. && _boids[i]->get_velocity()._y >0.)
         {
@@ -359,7 +400,7 @@ void Simulation::launch_simulation()
     std::cout<<"Initialising the boids"<<std::endl;
 
     this->initialise_positions();
-
+    
     this->move_boids_shapes();
 
     std::cout<<"Represent the boids"<<std::endl;
