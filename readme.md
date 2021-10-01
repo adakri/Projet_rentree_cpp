@@ -31,19 +31,19 @@ Règles et méthodes inspirées des notes [suivantes](https://github.com/florimo
 
 Une animation gif :
 
-<img src="https://github.com/adakri/Projet_rentree_cpp/tree/master/images/boids1.gif?raw=true" width="350" height="250">
+<img src="https://github.com/adakri/Projet_rentree_cpp/blob/master/images/boids1.gif?raw=true" width="640" height="480">
 
 
 Quelques images plus illustrantes:
 
-<img src="https://github.com/adakri/Projet_rentree_cpp/tree/master/images/boids1.png?raw=true" width="350" height="250">
+<img src="https://github.com/adakri/Projet_rentree_cpp/blob/master/images/boids1.png?raw=true" width="350" height="250">
 
-<img src="https://github.com/adakri/Projet_rentree_cpp/tree/master/images/boids2.png?raw=true" width="350" height="250">
+<img src="https://github.com/adakri/Projet_rentree_cpp/blob/master/images/boids2.png?raw=true" width="350" height="250">
 
 En jouant un petit peu avec les règles et les paramètres (et la direction) de séparation et de cohésien:
 
-<img src="https://github.com/adakri/Projet_rentree_cpp/tree/master/images/boids3.png?raw=true" width="350" height="250">
+<img src="https://github.com/adakri/Projet_rentree_cpp/blob/master/images/boids3.png?raw=true" width="350" height="250">
 
-<img src="https://github.com/adakri/Projet_rentree_cpp/tree/master/images/boids4.png?raw=true" width="350" height="250">
+<img src="https://github.com/adakri/Projet_rentree_cpp/blob/master/images/boids4.png?raw=true" width="350" height="250">
 
 
