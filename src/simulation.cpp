@@ -5,7 +5,7 @@
 #define PI 3.14159265
 
 
-Simulation::Simulation(int n, int width, int length) :  _width(width), _length(length),_N(n),_window(sf::VideoMode(width, length), "Boids"), _alignement_d(50.), _max_speed(20.), _separation_d(5.)
+Simulation::Simulation(int n, int width, int length) :  _width(width), _length(length),_N(n),_window(sf::VideoMode(width, length), "Boids"), _alignement_d(80.), _max_speed(10.), _separation_d(15.)
 {
     
     //_boids = new std::vector<Boid>;
@@ -18,8 +18,6 @@ Simulation::Simulation(int n, int width, int length) :  _width(width), _length(l
         _boids_points[i] = new sf::ConvexShape();
 
         _boids_points[i]->setPointCount(4);
-
-
 
         _boids_points[i]->setPoint(1, sf::Vector2f(0, 0));
         _boids_points[i]->setPoint(0, sf::Vector2f(-20, -10));
@@ -162,8 +160,8 @@ vector Simulation::separation(Boid* b)
 
 
     //pvj = pvj - b->get_position();
-    pvj._x *= 0.1;
-    pvj._y *= 0.1;
+    pvj._x *= 0.01;
+    pvj._y *= 0.01;
 
     //pvj = pvj - b->get_velocity();
 

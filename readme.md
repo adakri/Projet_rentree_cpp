@@ -1,13 +1,3 @@
-# Kit de démarrage
-Min découverte par l'exemple:
-
-- une fonction toute simple, avec trois paramètres passés par valeur, par référence, et une adresse comme au bon vieux C.
-- une classe toute simple.
-- un main
-
-Rapport d'étonnement?
-
-
 # Compilation et exécution à la mimine, sous Linux.
 Depuis le répertoire principal:
 
@@ -33,5 +23,27 @@ Bien sûr, adapter le kit à votre système d'exploitation. Et il faudra dans to
 
 Lorsque votre projet est modifié, par exemple en ajoutant de nouveaux fichiers, il est nécessaire de relancer l'étape de configuration avant de compiler.
 
-# Autres IDE, systèmes d'exploitations
-Je ne sais pas, débrouillez-vous. Mais ça marchera.
+# Projets Boids 
+
+Règles et méthodes inspirées des notes [suivantes](https://github.com/florimondmanca/pyboids/blob/master/NOTES.md) et du [site de Conrad Parker](http://www.vergenet.net/~conrad/boids/index.html).
+
+# Quelques images et une animation gif
+
+Une animation gif :
+
+<img src="https://github.com/adakri/Projet_rentree_cpp/tree/master/images/boids1.gif?raw=true" width="350" height="250">
+
+
+Quelques images plus illustrantes:
+
+<img src="https://github.com/adakri/Projet_rentree_cpp/tree/master/images/boids1.png?raw=true" width="350" height="250">
+
+<img src="https://github.com/adakri/Projet_rentree_cpp/tree/master/images/boids2.png?raw=true" width="350" height="250">
+
+En jouant un petit peu avec les règles et les paramètres (et la direction) de séparation et de cohésien:
+
+<img src="https://github.com/adakri/Projet_rentree_cpp/tree/master/images/boids3.png?raw=true" width="350" height="250">
+
+<img src="https://github.com/adakri/Projet_rentree_cpp/tree/master/images/boids4.png?raw=true" width="350" height="250">
+
+
